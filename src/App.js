@@ -1,23 +1,31 @@
 import React, {Component} from 'react';
-import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observer, Provider} from 'mobx-react';
+import {observable, action} from 'mobx';
 import Button from './components/Button';
 
 //styles
 import styles from './App.css';
 
-@observer class App extends Component {
+@observer
+class App extends Component {
   @observable count = 0;
-
+  @observable uiStore = {
+    text: 'button',
+    buttonOnClick:this.buttonOnClick.bind(this)
+  }
   render() {
     return (
-      <div className={styles.App}>
-        <Button onClick={() => {
-          this.count++;
-        }}/>
-        <span>{this.count}</span>
-      </div>
+      <Provider user={this.user} uiStore={this.uiStore}>
+        <div className={styles.App}>
+          <span>{this.count}</span>
+          <Button/>
+        </div>
+      </Provider>
     )
+  }
+
+  @action buttonOnClick() {
+    this.count++;
   }
 };
 
