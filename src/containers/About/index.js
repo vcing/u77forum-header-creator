@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 
 @inject(stores => ({uiStore:stores.uiStore})) @observer
-export default class Home extends Component {
-    render (props) {
+export default class About extends Component {
+    render () {
+        // console.log(this.props.uiStore);
         return (
-            <div key='home'>home</div>
+            <div key='about'>about</div>
         )
     }
 }
