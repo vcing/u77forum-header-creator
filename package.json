@@ -12,7 +12,8 @@
     "react-router-dom": "^4.0.0"
   },
   "devDependencies": {
-    "custom-react-scripts": "0.0.23"
+    "custom-react-scripts": "0.0.23",
+    "mobx-react-devtools": "^4.2.11"
   },
   "scripts": {
     "start": "react-scripts start",

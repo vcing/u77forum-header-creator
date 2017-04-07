@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 // import {observable} from 'mobx';
 import {observer, Provider} from 'mobx-react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import DevTools from 'mobx-react-devtools';
 import stores from '../../stores';
 import Home from '../Home';
 import About from '../About';
@@ -40,9 +41,9 @@ export default class App extends Component {
                 <Link to='/' className={styles.link}>home</Link>
                 <Link to='/about' className={styles.link}>about</Link>
               </ReactCSSTransitionGroup>
+              <DevTools />
             </div>
           )}/>
-
         </Router>
       </Provider>
     )
