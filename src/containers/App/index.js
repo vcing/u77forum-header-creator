@@ -22,26 +22,17 @@ export default class App extends Component {
                 transitionName="example"
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={300}>
-                <Route
-                  path='/'
-                  exact
-                  component={Home}
-                  key={Math.random()}
-                  location={location}/>
+                <Route path='/' exact component={Home} key={Math.random()} location={location}/>
               </ReactCSSTransitionGroup>
               <ReactCSSTransitionGroup
                 transitionName="example"
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={300}>
-                <Route
-                  path='/about'
-                  component={About}
-                  key={Math.random()}
-                  location={location}/>
+                <Route path='/about' component={About} key={Math.random()} location={location}/>
                 <Link to='/' className={styles.link}>home</Link>
                 <Link to='/about' className={styles.link}>about</Link>
               </ReactCSSTransitionGroup>
-              <DevTools />
+              <DevTools/>
             </div>
           )}/>
         </Router>
