@@ -31,24 +31,20 @@ class DownloadButton {
 class Detail {
     @observable title = '版块名称';
     @observable content = '版块内容';
-    @observable type = 'main-body-description'
-    @observable imgs = [];
+    @observable type = 'reason'
 
     constructor({
-        title = false,
+        title = '版块名称',
         content = '无内容',
-        type = 'main-body-description',
-        imgs = []
+        type = 'reason',
     } = {
-        title: false,
+        title: '版块名称',
         content: '无内容',
-        type: 'main-body-description',
-        imgs: []
+        type: 'reason',
     }) {
         this.title = title;
         this.content = content;
         this.type = type;
-        this.imgs = imgs;
     }
 }
 
@@ -87,38 +83,67 @@ class DataStore {
             .splice(position, 1);
     }
 
+    @action addDetail() {
+        this
+            .details
+            .push(new Detail());
+    }
+
+    @action removeDetail(index) {
+        this
+            .details
+            .splice(index, 1);
+    }
+
     @observable details = [];
 
     constructor() {
         this
             .details
             .push(new Detail({
-                type: 'main-body-developer main-body-description',
+                type: 'developer',
                 title: '作者的话:',
                 content: '<p>1、08年发行，近10年的经典游戏产品<br>2、打通网页端、移动端、PAD端的数据，实现随时随地杀一把<br>3、三国杀团队精心打造，脍炙人口的三国杀产' +
                         '品</p>'
             }));
         this
             .details
-            .push(new Detail({type: 'main-body-reason', title: '编辑推荐:', content: '<p>简单的操作，精彩刺激的视觉效果，更有多种主题皮肤可供选择，不一样的打砖块，挑战你的反应力</p>'}));
+            .push(new Detail({type: 'reason', title: '编辑推荐:', content: '<p>简单的操作，精彩刺激的视觉效果，更有多种主题皮肤可供选择，不一样的打砖块，挑战你的反应力</p>'}));
         this
             .details
-            .push(new Detail({type: 'main-body-number', content: '去月球手游版玩家群:  513253986', title: '513253986'}));
+            .push(new Detail({type: 'number', content: '去月球手游版玩家群:  513253986', title: '513253986'}));
         this
             .details
             .push(new Detail({
-                type: 'main-body-images',
-                imgs: ['http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png', 'http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png']
+                type: 'images',
+                content: 'http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png,http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png'
             }));
 
         this
             .details
-            .push(new Detail({type: 'main-body-description', title: '简介:', content: `经典桌游卡牌策略游戏<br><br>【游戏简介】<br>《三国杀Online-互通版》是由杭州游卡出品、以三国时代为背景的线上卡牌游戏。玩家可扮演三国时期著名人物，根据随机抽中的隐藏身份（主公、反贼、忠臣、内奸），通过使用独特的人物技能，合理打出各种类型的手牌，运筹帷幄、智取搏杀，最终以获得自己所属身份的胜利。<br><br>《三国杀Online-互通版》保留网页版核心玩法基础，与网页版数据信息实时互通，用户可实现双端同局竞技，并针对移动设备设计优化，打造精美简洁的游戏界面、人性化的操作模式，是三国杀品牌与历史文化的传承。<br><br>【联系我们】<br>游戏官网：http://www.sanguosha.com/<br>官方论坛：http://club.sanguosha.com/<br>客服电话：4007202233
-<div class="description-paragraph-end"></div>`}));
+            .push(new Detail({type: 'description', title: '简介:', content: `经典桌游卡牌策略游戏<br><br>【游戏简介】<br>《三国杀Online-互通版》是由杭州游卡出品、以三国时代为背景的线上卡牌游戏。玩家可扮演三国时期著名人物，根据随机抽中的隐藏身份（主公、反贼、忠臣、内奸），通过使用独特的人物技能，合理打出各种类型的手牌，运筹帷幄、智取搏杀，最终以获得自己所属身份的胜利。<br><br>《三国杀Online-互通版》保留网页版核心玩法基础，与网页版数据信息实时互通，用户可实现双端同局竞技，并针对移动设备设计优化，打造精美简洁的游戏界面、人性化的操作模式，是三国杀品牌与历史文化的传承。<br><br>【联系我们】<br>游戏官网：http://www.sanguosha.com/<br>官方论坛：http://club.sanguosha.com/<br>客服电话：4007202233`}));
+        this
+            .details
+            .push(new Detail({
+                type: 'log',
+                title: '更新日志',
+                content: '* Glorious 11 new toys, including Doge, Sushi, Console and Sports themes.<br>* F' +
+                        'ixed an issue with "get toy" button rarely showing up.<br>* Added discounted gif' +
+                        't package.<br>* More glorious bug fixes.'
+            }));
+        this
+            .details
+            .push(new Detail({
+                type: 'info',
+                title: '详细信息',
+                content: '[{"name":"文件大小","value":"19.67","link":"/user/1"},{"name":"文件大小","value":"19.67"' +
+                        ',"link":"/user/1"},{"name":"文件大小","value":"19.67","link":"/user/1"},{"name":"文件大' +
+                        '小","value":"19.67","link":"/user/1"},{"name":"文件大小","value":"19.67","link":"/use' +
+                        'r/1"}]'
+            }))
     }
 
-    @action
-    changeData(attr, value) {
+    @action changeData(attr, value) {
         if (attr.indexOf('.') !== -1) {
             let attrs = attr.split('.');
             switch (attrs.length) {

@@ -37,8 +37,198 @@ export default class Editor extends Component {
             .uiStore
             .toggleDetailStatus();
     }
+    toggleDetailItem(index) {
+        return function () {
+            console.log(index);
+            this
+                .props
+                .uiStore
+                .toggleDetailItemStatus(index);
+        }
+    }
+    addDetail() {
+        this
+            .props
+            .dataStore
+            .addDetail();
+    }
+    removeDetail(index) {
+        return function () {
+            this
+                .props
+                .dataStore
+                .removeDetail(index);
+        }
+    }
+    changeInfoData(index, attr) {
+        return function (e) {}
+    }
+    toggleInfoItem(index) {
+        this
+            .props
+            .uiStore
+            .toggleInfoStatus(index);
+    }
+    renderDetail(detail, index) {
+        let infoRender = (
+            <div></div>
+        );
+        let ui = this.props.uiStore;
+        if (detail.type == 'info') {
+            let items = JSON.parse(detail.content);
+            infoRender = (
+                <div className="form-horizental">
+                    {items.map((item, _index) => (
+                        <div className="panel panel-default" key={_index}>
+                            <div className="panel-heading">
+                                <h5>{_index + 1}
+                                    <i
+                                        className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[index]
+                                        ? ''
+                                        : 'fa-rotate-90'}`}></i>
+                                    <i className="fa fa-remove pull-right"></i>
+                                </h5>
+                            </div>
+                            <div
+                                className={`panel-body collapse ${ui.infoStatus[index]
+                                ? ''
+                                : 'in'}`}>
+                                <div className="form-group">
+                                    <label htmlFor={`info.item.${_index}.attr`} className="col-sm-3 control-label">属性:</label>
+                                    <div className="col-sm-9">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id={`info.item.${_index}.attr`}
+                                            placeholder="属性名称"
+                                            value={item.name}
+                                            onClick={this.changeInfoData(_index, 'name')}/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor={`info.item.${_index}.value`} className="col-sm-3 control-label">值:</label>
+                                    <div className="col-sm-9">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id={`info.item.${_index}.value`}
+                                            placeholder="属性的值"
+                                            value={item.value}
+                                            onClick={this.changeInfoData(_index, 'value')}/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor={`info.item.${_index}.link`} className="col-sm-3 control-label">链接地址:</label>
+                                    <div className="col-sm-9">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id={`info.item.${_index}.link`}
+                                            placeholder="链接地址URL"
+                                            value={item.link}
+                                            onClick={this.changeInfoData(_index, 'link')}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+        return (
+            <div
+                className="panel panel-default"
+                key={index}
+                style={{
+                border: 0,
+                borderBottom: '3px solid #31708f'
+            }}>
+                <div
+                    className="panel-heading"
+                    style={{
+                    background: '#fff',
+                    padding: 0,
+                    paddingBottom: '5px',
+                    borderColor: '#ddd'
+                }}>
+                    <h4>{index + 1}.{detail.type}
+                        <i
+                            onClick={this
+                            .toggleDetailItem(index)
+                            .bind(this)}
+                            style={{
+                            transition: "all .3s ease"
+                        }}
+                            className={`fa fa-angle-right fa-fw pull-left ${ui.detailItemStatus[index]
+                            ? ''
+                            : 'fa-rotate-90'}`}></i>
+                        <i
+                            className="pull-right fa fa-remove"
+                            onClick={this
+                            .removeDetail(index)
+                            .bind(this)}></i>
+                    </h4>
+                </div>
+                <div
+                    className={`panel-body collapse ${ui.detailItemStatus[index]
+                    ? ''
+                    : 'in'}`}>
+                    <div className="form-group">
+                        <label htmlFor={`details${index}.type`}>模块类型</label>
+                        <select
+                            name={`details.${index}.type`}
+                            id={`details.${index}.type`}
+                            className="form-control"
+                            onChange={this
+                            .changeData
+                            .bind(this)}
+                            value={detail.type}>
+                            <option value="developer">开发者</option>
+                            <option value="reason">推荐理由</option>
+                            <option value="number">复制群号</option>
+                            <option value="images">图片列表</option>
+                            <option value="description">介绍</option>
+                            <option value="log">更新日志</option>
+                            <option value="info">详细信息</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor={`details.${index}.title`}>版块标题</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id={`details.${index}.title`}
+                            placeholder="标题"
+                            value={detail.title}
+                            name={`details.${index}.title`}
+                            onChange={this
+                            .changeData
+                            .bind(this)}/>
+                    </div>
+                    {detail.type == 'info'
+                        ? infoRender
+                        : (
+                            <div className="form-group">
+                                <label htmlFor={`details.${index}.content`}>版块内容</label>
+                                <textarea
+                                    className="form-control"
+                                    id={`details.${index}.content`}
+                                    placeholder="内容"
+                                    name={`details.${index}.content`}
+                                    onChange={this
+                                    .changeData
+                                    .bind(this)}
+                                    value={detail.content}></textarea>
+                            </div>
+                        )}
+
+                </div>
+            </div>
+        )
+    }
     render() {
         let header = this.props.dataStore.header;
+        let details = this.props.dataStore.details;
         let ui = this.props.uiStore;
         return (
 
@@ -50,18 +240,17 @@ export default class Editor extends Component {
             }}>
                 <div className="panel panel-success">
                     <div className="panel-heading">
-                        <h3>头部设置<small>
-                                <i
-                                    onClick={this
-                                    .toggleHeader
-                                    .bind(this)}
-                                    style={{
-                                    transition: "all .3s ease"
-                                }}
-                                    className={`fa fa-angle-left fa-fw ${ui.headerStatus
-                                    ? 'fa-rotate-270'
-                                    : ''}`}></i>
-                            </small>
+                        <h3>头部设置
+                            <i
+                                onClick={this
+                                .toggleHeader
+                                .bind(this)}
+                                style={{
+                                transition: "all .3s ease"
+                            }}
+                                className={`fa fa-angle-right pull-left fa-fw ${ui.headerStatus
+                                ? 'fa-rotate-90'
+                                : ''}`}></i>
                         </h3>
                     </div>
                     <div
@@ -252,7 +441,7 @@ export default class Editor extends Component {
                                     .map((btn, index) => (
                                         <div className="panel panel-default" key={index}>
                                             <div className="panel-heading">下载按钮{index + 1}
-                                                <a onClick={this.removeDownloadButton(index)}>
+                                                <a onClick={this.removeDownloadButton(index)} className="pull-right">
                                                     <i className="fa fa-remove"></i>
                                                 </a>
                                             </div>
@@ -317,38 +506,51 @@ export default class Editor extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <div className="col-sm-5 col-sm-push-6">
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={this
-                                    .props
-                                    .dataStore
-                                    .addHeaderButton
-                                    .bind(this.props.dataStore)}>添加按钮</button>
-                            </div>
+                            <button
+                                className="btn btn-primary center-block"
+                                onClick={this
+                                .props
+                                .dataStore
+                                .addHeaderButton
+                                .bind(this.props.dataStore)}>添加按钮</button>
                         </div>
                     </div>
                 </div>
                 <div className="panel panel-info">
                     <div className="panel-heading">
-                        <h3>详情设置<small>
-                                <i
-                                    onClick={this
-                                    .toggleDetail
-                                    .bind(this)} 
-                                    style={{
-                                    transition: "all .3s ease"
-                                }}
-                                    className={`fa fa-angle-left fa-fw ${ui.detailStatus
-                                    ? 'fa-rotate-270'
-                                    : ''}`}></i>
-                            </small>
+                        <h3>详情设置
+                            <i
+                                onClick={this
+                                .toggleDetail
+                                .bind(this)}
+                                style={{
+                                transition: "all .3s ease"
+                            }}
+                                className={`fa fa-angle-right pull-left fa-fw ${ui.detailStatus
+                                ? 'fa-rotate-90'
+                                : ''}`}></i>
                         </h3>
                     </div>
                     <div
                         className={`panel-body collapse ${ui.detailStatus
                         ? 'in'
                         : ''}`}>
+                        <div className="alert alert-warning" role="alert">
+                            <strong>规则:</strong>
+                            <p>
+                                1.介绍只能存在一个。<br/>
+                                2.介绍会出现展示全部按钮，默认高度为125px。<br/>
+                                3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
+                                4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
+                                5.删除所有版块则不会生成整个详情模块<br/>
+                            </p>
+                        </div>
+                        {details.map((detail, index) => this.renderDetail(detail, index))}
+                        <button
+                            className="btn btn-primary center-block"
+                            onClick={this
+                            .addDetail
+                            .bind(this)}>添加版块</button>
                     </div>
                 </div>
             </div>
