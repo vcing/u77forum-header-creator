@@ -58,7 +58,7 @@ export default class Template extends Component {
                                     .map((image, _index) => (
                                         <li key={_index}>
                                             <a href={image} data-lightbox="screenshots">
-                                                <img src={image}/>
+                                                <img src={image} role="presentation"/>
                                             </a>
                                         </li>
                                     ))}
@@ -103,6 +103,9 @@ export default class Template extends Component {
                             <a
                                 id="detail-showall"
                                 type="button"
+                                onClick={function(){
+                                    window.jQuery('#description').removeClass('collapse');
+                                }}
                                 className="btn btn-link"><span>展开全部</span><span className="fa fa-angle-down"></span>
                             </a>
                         </div>
@@ -149,6 +152,8 @@ export default class Template extends Component {
                         </ul>
                     </div>
                 )
+            default:
+                break;
         }
     }
 

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
-import {action} from 'mobx';
 
 @inject(stores => ({dataStore: stores.dataStore, uiStore: stores.uiStore}))@observer
 export default class Editor extends Component {
     changeData(e) {
-        if (e.target.type == 'checkbox') {
+        if (e.target.type === 'checkbox') {
             this
                 .props
                 .dataStore
@@ -73,12 +72,22 @@ export default class Editor extends Component {
                 .toggleInfoStatus(index);
         }
     }
+    addInfoItem(detail) {
+        return function() {
+            detail.addInfoItem();
+        }
+    }
+    removeInfoItem(detail,index) {
+        return function() {
+            detail.removeInfoItem(index);
+        }
+    }
     renderDetail(detail, index) {
         let infoRender = (
             <div></div>
         );
         let ui = this.props.uiStore;
-        if (detail.type == 'info') {
+        if (detail.type === 'info') {
             infoRender = (
                 <div className="form-horizental">
                     {detail.infos.map((item, _index) => (
@@ -92,7 +101,7 @@ export default class Editor extends Component {
                                         className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[_index]
                                         ? ''
                                         : 'fa-rotate-90'}`}></i>
-                                    <i className="fa fa-remove pull-right"></i>
+                                    <i className="fa fa-remove pull-right" onClick={this.removeInfoItem(detail,_index)}></i>
                                 </h5>
                             </div>
                             <div
@@ -138,6 +147,7 @@ export default class Editor extends Component {
                             </div>
                         </div>
                     ))}
+                    <button className="btn btn-success center-block" onClick={this.addInfoItem(detail).bind(this)}>添加属性</button>
                 </div>
             )
         }
@@ -211,7 +221,7 @@ export default class Editor extends Component {
                             .changeData
                             .bind(this)}/>
                     </div>
-                    {detail.type == 'info'
+                    {detail.type === 'info'
                         ? infoRender
                         : (
                             <div className="form-group">

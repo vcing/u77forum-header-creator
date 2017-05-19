@@ -1,16 +1,23 @@
 import React, {Component} from 'react';
-// import {observable} from 'mobx';
+import {autorun} from 'mobx';
 import {observer, Provider} from 'mobx-react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import DevTools from 'mobx-react-devtools';
 import stores from '../../stores';
 import Template from '../Template';
 import Editor from '../Editor';
-import styles from './App.css';
 
 @observer
 export default class App extends Component {
+  constructor() {
+    super();
+    autorun(() => {
+      this.ds = stores.dataStore.serialize;
+      window
+        .jQuery('#template-html')
+        .val(window.jQuery('#template-result').html() + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
+            "('collapse'))</script>");
+    });
+  }
   render() {
     return (
       <Provider {...stores}>
@@ -25,21 +32,27 @@ export default class App extends Component {
               </div>
             </div>
           </div>
-          <div className="row" style={{margin:'20px 0'}}>
-            <div className="btn-toolbar col-sm-4 col-sm-push-4">
-              <div className="btn-group">
-                <button className="btn btn-success" onClick={function() {
-                  eval(`$('#html-result').val($('#template-result').html()+"<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass('collapse'))</script>");`)
-                }}>生成HTML</button>
-              </div>
-              <div className="btn-group">
-                <button className="btn btn-primary">提交</button>
-              </div>
-            </div>
+          <div className="row" style={{
+            margin: '20px 0'
+          }}>
+            <button className="btn btn-lg btn-primary center-block" onClick={window.templateSubmit}>提交</button>
           </div>
+          <input
+            type="hidden"
+            name="data"
+            id="template-data"
+            value={stores.dataStore.serialize}/>
           <div className="row">
-            <textarea className="center-block" id="html-result" style={{width:'80%',margin:'0 auto'}} rows="30"></textarea>
+            <textarea
+              className="center-block"
+              id="template-html"
+              style={{
+              width: '80%',
+              margin: '0 auto'
+            }}
+              rows="30"></textarea>
           </div>
+          <DevTools/>
         </div>
       </Provider>
     )

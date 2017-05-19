@@ -31,23 +31,53 @@ class DownloadButton {
 class Detail {
     @observable title = '版块名称';
     @observable content = '版块内容';
-    @observable type = 'reason';
-    @computed get infos() {
-        if(this.type === 'info') {
-            let result = '';
-            try {
-                result = JSON.parse(this.content);
-            }catch(e) {}
-            return result;
-        }else {
-            return '';
+    @observable _type = 'reason';
+    @computed get type() {
+        return this._type;
+    }
+
+    set type(value) {
+        this._type = value;
+        switch (this._type) {
+            case 'images':
+                this.content = 'http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png,http://img.u77.com/gam' +
+                        'e/201705/150923ch1wksuwkjsjcc06.png';
+                break;
+            case 'info':
+                this.content = '[{"name":"属性名称","value":"属性值","link":"/user/1"}]';
+                break;
+            default:
+                break;
         }
     }
 
-    set infos({index,attr,value}) {
+    @computed get infos() {
+        if (this.type === 'info') {
+            let result = [];
+            try {
+                result = JSON.parse(this.content);
+            } catch (e) {}
+            return result;
+        } else {
+            return [];
+        }
+    }
+
+    set infos({index, attr, value}) {
         let _infos = JSON.parse(this.content);
         _infos[index][attr] = value;
-        this.content = JSON.stringify(_infos);
+        this.content = JSON
+            .stringify(_infos);
+    }
+
+    @action addInfoItem() {
+        this.infos.push({"name":"新属性","value":"新属性的值","link":"/user/1"})
+        this.content = JSON.stringify(this.infos);
+    }
+
+    @action removeInfoItem(index) {
+        this.infos.splice(index,1);
+        this.content = JSON.stringify(this.infos);
     }
 
     constructor({
@@ -60,8 +90,20 @@ class Detail {
         type: 'reason'
     }) {
         this.title = title;
-        this.content = content;
         this.type = type;
+        if (type === 'info') {
+            this.content = JSON.stringify(content);
+        } else {
+            this.content = content;
+        }
+    }
+
+    @computed get serialize() {
+        return {
+            title:this.title,
+            content:this.type === 'info' ? JSON.parse(this.content) : this.content,
+            type:this.type
+        }
     }
 }
 
@@ -154,11 +196,54 @@ class DataStore {
             .push(new Detail({
                 type: 'info',
                 title: '详细信息',
-                content: '[{"name":"文件大小","value":"19.67","link":"/user/1"},{"name":"文件大小","value":"19.67"' +
-                        ',"link":"/user/1"},{"name":"文件大小","value":"19.67","link":"/user/1"},{"name":"文件大' +
-                        '小","value":"19.67","link":"/user/1"},{"name":"文件大小","value":"19.67","link":"/use' +
-                        'r/1"}]'
+                content: [
+                    {
+                        "name": "文件大小",
+                        "value": "19.67",
+                        "link": "/user/1"
+                    }, {
+                        "name": "文件大小",
+                        "value": "19.67",
+                        "link": "/user/1"
+                    }, {
+                        "name": "文件大小",
+                        "value": "19.67",
+                        "link": "/user/1"
+                    }, {
+                        "name": "文件大小",
+                        "value": "19.67",
+                        "link": "/user/1"
+                    }, {
+                        "name": "文件大小",
+                        "value": "19.67",
+                        "link": "/user/1"
+                    }
+                ]
             }))
+    }
+
+    @action load(data) {
+        try {
+            data = JSON.parse(data);
+            data.header.buttons = data
+                .header
+                .buttons
+                .map(btn => new DownloadButton(btn));
+            this.header = data.header;
+
+            data.details = data
+                .details
+                .map(detail => new Detail(detail));
+            this.details = data.details;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    @computed get serialize() {
+        let temp = Object.assign({},this);
+        temp.details = temp.details.map(detail => detail.serialize);
+        return JSON.stringify(temp);
     }
 
     @action changeData(attr, value) {
