@@ -52,6 +52,7 @@ export default class App extends Component {
             }}
               rows="30"></textarea>
           </div>
+          <textarea name="" id="test" cols="30" rows="10"></textarea>
           <DevTools/>
         </div>
       </Provider>
