@@ -17,11 +17,28 @@ export default class App extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-6 col-md-12">
-              <Editor />
+              <Editor/>
             </div>
             <div className="col-lg-6 col-md-12">
-              <Template/>
+              <div id="template-result">
+                <Template/>
+              </div>
             </div>
+          </div>
+          <div className="row" style={{margin:'20px 0'}}>
+            <div className="btn-toolbar col-sm-4 col-sm-push-4">
+              <div className="btn-group">
+                <button className="btn btn-success" onClick={function() {
+                  eval(`$('#html-result').val($('#template-result').html()+"<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass('collapse'))</script>");`)
+                }}>生成HTML</button>
+              </div>
+              <div className="btn-group">
+                <button className="btn btn-primary">提交</button>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <textarea className="center-block" id="html-result" style={{width:'80%',margin:'0 auto'}} rows="30"></textarea>
           </div>
         </div>
       </Provider>

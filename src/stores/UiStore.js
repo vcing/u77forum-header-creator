@@ -24,7 +24,7 @@ class UiStore {
     }
 
     @action toggleInfoStatus(index) {
-        this.infoStatus[index] = !this.infoStatus;
+        this.infoStatus[index] = !this.infoStatus[index];
     }
 }
 

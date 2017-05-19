@@ -100,16 +100,11 @@ export default class Template extends Component {
                             <div className="description-paragraph-end"></div>
                         </div>
                         <div className="body-description-more">
-                            <button
+                            <a
+                                id="detail-showall"
                                 type="button"
-                                onClick={function () {
-                                eval(`$('#description').removeClass('collapse')`)
-                            }}
-                                className="btn btn-link"
-                                data-taptap-collapse="#description"
-                                data-limit="125">展开全部
-                                <span className="fa fa-angle-down"></span>
-                            </button>
+                                className="btn btn-link"><span>展开全部</span><span className="fa fa-angle-down"></span>
+                            </a>
                         </div>
                     </div>
                 )
@@ -128,31 +123,29 @@ export default class Template extends Component {
                     </div>
                 )
             case 'info':
-                let items;
-                try {
-                    items = JSON.parse(detail.content);
-                } catch (e) {}
                 return (
                     <div className="main-body-info" key={index}>
                         <div className="section-title">
                             <h3>{detail.title}</h3>
                         </div>
                         <ul className="list-unstyled body-info-list">
-                            {items.map((item, _index) => (
-                                <li key={_index}>
-                                    <span className="info-item-title">File Size:</span>
-                                    <span
-                                        className={`info-item-content ${item.link
-                                        ? 'link'
-                                        : ''}`}>
-                                        {item.link
-                                            ? (
-                                                <a href={item.link} className="info-item-content link">{item.value}</a>
-                                            )
-                                            : item.value}
-                                    </span>
-                                </li>
-                            ))}
+                            {detail
+                                .infos
+                                .map((item, _index) => (
+                                    <li key={_index}>
+                                        <span className="info-item-title">{item.name}</span>
+                                        <span
+                                            className={`info-item-content ${item.link
+                                            ? 'link'
+                                            : ''}`}>
+                                            {item.link
+                                                ? (
+                                                    <a href={item.link} className="info-item-content link">{item.value}</a>
+                                                )
+                                                : item.value}
+                                        </span>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 )
@@ -245,10 +238,6 @@ export default class Template extends Component {
                     {details.map((detail, index) => this.renderDetail(detail, index))}
                 </div>
                 <div id="u77-comments"></div>
-                <script
-                    dangerouslySetInnerHTML={{
-                    __html: `window.descriptionShowAll = function() { $('#description').removeClass('collapse') }`
-                }}></script>
             </section>
         )
     }

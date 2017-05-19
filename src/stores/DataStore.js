@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
 
 class DownloadButton {
     @observable style = 'primary';
@@ -31,16 +31,33 @@ class DownloadButton {
 class Detail {
     @observable title = '版块名称';
     @observable content = '版块内容';
-    @observable type = 'reason'
+    @observable type = 'reason';
+    @computed get infos() {
+        if(this.type === 'info') {
+            let result = '';
+            try {
+                result = JSON.parse(this.content);
+            }catch(e) {}
+            return result;
+        }else {
+            return '';
+        }
+    }
+
+    set infos({index,attr,value}) {
+        let _infos = JSON.parse(this.content);
+        _infos[index][attr] = value;
+        this.content = JSON.stringify(_infos);
+    }
 
     constructor({
         title = '版块名称',
         content = '无内容',
-        type = 'reason',
+        type = 'reason'
     } = {
         title: '版块名称',
         content: '无内容',
-        type: 'reason',
+        type: 'reason'
     }) {
         this.title = title;
         this.content = content;
@@ -116,7 +133,8 @@ class DataStore {
             .details
             .push(new Detail({
                 type: 'images',
-                content: 'http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png,http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png'
+                content: 'http://img.u77.com/game/201705/150923ch1wksuwkjsjcc06.png,http://img.u77.com/gam' +
+                        'e/201705/150923ch1wksuwkjsjcc06.png'
             }));
 
         this

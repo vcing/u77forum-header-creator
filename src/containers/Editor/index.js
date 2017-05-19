@@ -60,14 +60,18 @@ export default class Editor extends Component {
                 .removeDetail(index);
         }
     }
-    changeInfoData(index, attr) {
-        return function (e) {}
+    changeInfoData(detail, index, attr) {
+        return function (e) {
+            detail.infos = {index, attr,value:e.target.value};
+        }
     }
     toggleInfoItem(index) {
-        this
-            .props
-            .uiStore
-            .toggleInfoStatus(index);
+        return function () {
+            this
+                .props
+                .uiStore
+                .toggleInfoStatus(index);
+        }
     }
     renderDetail(detail, index) {
         let infoRender = (
@@ -75,22 +79,24 @@ export default class Editor extends Component {
         );
         let ui = this.props.uiStore;
         if (detail.type == 'info') {
-            let items = JSON.parse(detail.content);
             infoRender = (
                 <div className="form-horizental">
-                    {items.map((item, _index) => (
+                    {detail.infos.map((item, _index) => (
                         <div className="panel panel-default" key={_index}>
                             <div className="panel-heading">
                                 <h5>{_index + 1}
                                     <i
-                                        className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[index]
+                                        onClick={this
+                                        .toggleInfoItem(_index)
+                                        .bind(this)}
+                                        className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[_index]
                                         ? ''
                                         : 'fa-rotate-90'}`}></i>
                                     <i className="fa fa-remove pull-right"></i>
                                 </h5>
                             </div>
                             <div
-                                className={`panel-body collapse ${ui.infoStatus[index]
+                                className={`panel-body collapse ${ui.infoStatus[_index]
                                 ? ''
                                 : 'in'}`}>
                                 <div className="form-group">
@@ -102,7 +108,7 @@ export default class Editor extends Component {
                                             id={`info.item.${_index}.attr`}
                                             placeholder="属性名称"
                                             value={item.name}
-                                            onClick={this.changeInfoData(_index, 'name')}/>
+                                            onChange={this.changeInfoData(detail, _index, 'name')}/>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -114,7 +120,7 @@ export default class Editor extends Component {
                                             id={`info.item.${_index}.value`}
                                             placeholder="属性的值"
                                             value={item.value}
-                                            onClick={this.changeInfoData(_index, 'value')}/>
+                                            onChange={this.changeInfoData(detail, _index, 'value')}/>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -126,7 +132,7 @@ export default class Editor extends Component {
                                             id={`info.item.${_index}.link`}
                                             placeholder="链接地址URL"
                                             value={item.link}
-                                            onClick={this.changeInfoData(_index, 'link')}/>
+                                            onChange={this.changeInfoData(detail, _index, 'link')}/>
                                     </div>
                                 </div>
                             </div>
