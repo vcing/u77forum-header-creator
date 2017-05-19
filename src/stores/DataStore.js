@@ -30,8 +30,21 @@ class DownloadButton {
 
 class Detail {
     @observable title = '版块名称';
-    @observable content = '版块内容';
+    @observable _content = '版块内容';
     @observable _type = 'reason';
+
+    @computed get content() {
+        return this._content
+    }
+
+    set content(value) {
+        if(this.type !== 'info') {
+            this._content = value.replace(/"/g,"“");
+        }else {
+            this._content = value;
+        }
+    }
+
     @computed get type() {
         return this._type;
     }
@@ -157,6 +170,7 @@ class DataStore {
     @observable details = [];
 
     constructor() {
+        window.templateLoad = this.load.bind(this);
         this
             .details
             .push(new Detail({

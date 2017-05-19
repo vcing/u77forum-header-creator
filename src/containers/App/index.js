@@ -35,7 +35,7 @@ export default class App extends Component {
           <div className="row" style={{
             margin: '20px 0'
           }}>
-            <button className="btn btn-lg btn-primary center-block" onClick={window.templateSubmit}>提交</button>
+            <button id="template-submit" className="btn btn-lg btn-primary center-block" onClick={window.templateSubmit}>提交</button>
           </div>
           <input
             type="hidden"
