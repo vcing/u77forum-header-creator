@@ -63,26 +63,6 @@ export default class Template extends Component {
                                         </li>
                                     ))}
                             </ul>
-                            <a
-                                href="#"
-                                className="body-images-control prev hide"
-                                data-taptap-app-screenshots="control"
-                                data-target="#imageShots"
-                                style={{
-                                opacity: 0
-                            }}>
-                                <i className="taptap-icon icon-chevron-white-left"></i>
-                            </a>
-                            <a
-                                href="#"
-                                className="body-images-control next"
-                                data-taptap-app-screenshots="control"
-                                data-target="#imageShots"
-                                style={{
-                                opacity: 0
-                            }}>
-                                <i className="taptap-icon icon-chevron-white-right"></i>
-                            </a>
                         </div>
                     </div>
                 )
@@ -90,7 +70,7 @@ export default class Template extends Component {
                 return (
                     <div className="main-body-description" key={index}>
                         <div className="section-title">
-                            <h3>{}detail.title</h3>
+                            <h3>{detail.title}</h3>
                         </div>
                         <div className="body-description-paragraph collapse" id="description">
                             <p

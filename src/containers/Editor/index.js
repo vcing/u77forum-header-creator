@@ -559,27 +559,29 @@ export default class Editor extends Component {
                                 : ''}`}></i>
                         </h3>
                     </div>
-                </div>
-                <div
-                    className={`panel-body collapse ${ui.detailStatus
-                    ? 'in'
-                    : ''}`}>
-                    <div className="alert alert-warning" role="alert">
-                        <strong>规则:</strong>
-                        <p>
-                            1.介绍只能存在一个。<br/>
-                            2.介绍会出现展示全部按钮，默认高度为125px。<br/>
-                            3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
-                            4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
-                            5.删除所有版块则不会生成整个详情模块<br/>
-                        </p>
+                    <div
+                        className={`panel-body collapse ${ui.detailStatus
+                        ? 'in'
+                        : ''}`}>
+
+                        {details.map((detail, index) => this.renderDetail(detail, index))}
+                        <button
+                            className="btn btn-primary center-block"
+                            onClick={this
+                            .addDetail
+                            .bind(this)}>添加版块</button>
                     </div>
-                    {details.map((detail, index) => this.renderDetail(detail, index))}
-                    <button
-                        className="btn btn-primary center-block"
-                        onClick={this
-                        .addDetail
-                        .bind(this)}>添加版块</button>
+                </div>
+                <div className="alert alert-warning" role="alert">
+                    <strong>规则:</strong>
+                    <p>
+                        1.介绍只能存在一个。<br/>
+                        2.介绍会出现展示全部按钮，默认高度为125px。<br/>
+                        3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
+                        4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
+                        5.删除所有版块则不会生成整个详情模块<br/>
+                        6.如果需要提交,<strong>请务必改变一下内容</strong>再点提交按钮
+                    </p>
                 </div>
             </div>
         )
