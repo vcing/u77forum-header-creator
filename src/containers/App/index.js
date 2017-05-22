@@ -14,7 +14,7 @@ export default class App extends Component {
       this.ds = stores.dataStore.serialize;
       window
         .jQuery('#template-html')
-        .val(window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g,'') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
+        .val(window.jQuery('#template-result').html() && window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g,'') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
             "('collapse'))</script>");
     });
   }
@@ -41,7 +41,7 @@ export default class App extends Component {
                 className="btn btn-lg btn-primary"
                 onClick={window.templateSubmit}> 提交 </button><span>  </span>
               <button
-                id="template-submit"
+                id="template-recommend"
                 className="btn btn-lg btn-warning"
                 onClick={window.recommend}> 推荐 </button>
             </div>
