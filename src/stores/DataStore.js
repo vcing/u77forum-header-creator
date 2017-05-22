@@ -259,7 +259,7 @@ class DataStore {
     @computed get serialize() {
         let temp = Object.assign({},this);
         temp.details = temp.details.map(detail => detail.serialize);
-        return JSON.stringify(temp).replace(/\\/g,'\\\\');
+        return JSON.stringify(temp); //.replace(/\\/g,'\\\\');
     }
 
     @action changeData(attr, value) {

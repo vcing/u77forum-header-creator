@@ -173,7 +173,7 @@ export default class Template extends Component {
                                     <span>{header.imgTip}</span>
                                 </div>
                             )
-                            : ''}
+                            : <span></span>}
                     </div>
                     <div className="main-header-text">
                         <h1>{header.name}</h1>
@@ -214,7 +214,7 @@ export default class Template extends Component {
                                             rel="nofollow">{header.googlePlay.price}</a>
                                     </div>
                                 )
-                                : ''}
+                                : <span></span>}
                         </div>
                     </div>
                     <div className="main-header-tab">

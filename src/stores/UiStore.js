@@ -2,8 +2,8 @@ import createHistory from 'history/createBrowserHistory'
 import {observable, action} from 'mobx';
 
 class UiStore {
-    @observable headerStatus = true;
-    @observable detailStatus = true;
+    @observable headerStatus = false;
+    @observable detailStatus = false;
     @observable detailItemStatus = new Array(99);
     @observable infoStatus = new Array(99);
 

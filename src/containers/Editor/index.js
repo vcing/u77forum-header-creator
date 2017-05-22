@@ -61,7 +61,11 @@ export default class Editor extends Component {
     }
     changeInfoData(detail, index, attr) {
         return function (e) {
-            detail.infos = {index, attr,value:e.target.value};
+            detail.infos = {
+                index,
+                attr,
+                value: e.target.value
+            };
         }
     }
     toggleInfoItem(index) {
@@ -73,12 +77,12 @@ export default class Editor extends Component {
         }
     }
     addInfoItem(detail) {
-        return function() {
+        return function () {
             detail.addInfoItem();
         }
     }
-    removeInfoItem(detail,index) {
-        return function() {
+    removeInfoItem(detail, index) {
+        return function () {
             detail.removeInfoItem(index);
         }
     }
@@ -90,64 +94,72 @@ export default class Editor extends Component {
         if (detail.type === 'info') {
             infoRender = (
                 <div className="form-horizental">
-                    {detail.infos.map((item, _index) => (
-                        <div className="panel panel-default" key={_index}>
-                            <div className="panel-heading">
-                                <h5>{_index + 1}
-                                    <i
-                                        onClick={this
-                                        .toggleInfoItem(_index)
-                                        .bind(this)}
-                                        className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[_index]
-                                        ? ''
-                                        : 'fa-rotate-90'}`}></i>
-                                    <i className="fa fa-remove pull-right" onClick={this.removeInfoItem(detail,_index)}></i>
-                                </h5>
+                    {detail
+                        .infos
+                        .map((item, _index) => (
+                            <div className="panel panel-default" key={_index}>
+                                <div className="panel-heading">
+                                    <h5>{_index + 1}
+                                        <i
+                                            onClick={this
+                                            .toggleInfoItem(_index)
+                                            .bind(this)}
+                                            className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[_index]
+                                            ? ''
+                                            : 'fa-rotate-90'}`}></i>
+                                        <i
+                                            className="fa fa-remove pull-right"
+                                            onClick={this.removeInfoItem(detail, _index)}></i>
+                                    </h5>
+                                </div>
+                                <div
+                                    className={`panel-body collapse ${ui.infoStatus[_index]
+                                    ? ''
+                                    : 'in'}`}>
+                                    <div className="form-group">
+                                        <label htmlFor={`info.item.${_index}.attr`} className="col-sm-3 control-label">属性:</label>
+                                        <div className="col-sm-9">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id={`info.item.${_index}.attr`}
+                                                placeholder="属性名称"
+                                                value={item.name}
+                                                onChange={this.changeInfoData(detail, _index, 'name')}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor={`info.item.${_index}.value`} className="col-sm-3 control-label">值:</label>
+                                        <div className="col-sm-9">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id={`info.item.${_index}.value`}
+                                                placeholder="属性的值"
+                                                value={item.value}
+                                                onChange={this.changeInfoData(detail, _index, 'value')}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor={`info.item.${_index}.link`} className="col-sm-3 control-label">链接地址:</label>
+                                        <div className="col-sm-9">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id={`info.item.${_index}.link`}
+                                                placeholder="链接地址URL"
+                                                value={item.link}
+                                                onChange={this.changeInfoData(detail, _index, 'link')}/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div
-                                className={`panel-body collapse ${ui.infoStatus[_index]
-                                ? ''
-                                : 'in'}`}>
-                                <div className="form-group">
-                                    <label htmlFor={`info.item.${_index}.attr`} className="col-sm-3 control-label">属性:</label>
-                                    <div className="col-sm-9">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id={`info.item.${_index}.attr`}
-                                            placeholder="属性名称"
-                                            value={item.name}
-                                            onChange={this.changeInfoData(detail, _index, 'name')}/>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor={`info.item.${_index}.value`} className="col-sm-3 control-label">值:</label>
-                                    <div className="col-sm-9">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id={`info.item.${_index}.value`}
-                                            placeholder="属性的值"
-                                            value={item.value}
-                                            onChange={this.changeInfoData(detail, _index, 'value')}/>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor={`info.item.${_index}.link`} className="col-sm-3 control-label">链接地址:</label>
-                                    <div className="col-sm-9">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id={`info.item.${_index}.link`}
-                                            placeholder="链接地址URL"
-                                            value={item.link}
-                                            onChange={this.changeInfoData(detail, _index, 'link')}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                    <button className="btn btn-success center-block" onClick={this.addInfoItem(detail).bind(this)}>添加属性</button>
+                        ))}
+                    <button
+                        className="btn btn-success center-block"
+                        onClick={this
+                        .addInfoItem(detail)
+                        .bind(this)}>添加属性</button>
                 </div>
             )
         }
@@ -547,27 +559,27 @@ export default class Editor extends Component {
                                 : ''}`}></i>
                         </h3>
                     </div>
-                    <div
-                        className={`panel-body collapse ${ui.detailStatus
-                        ? 'in'
-                        : ''}`}>
-                        <div className="alert alert-warning" role="alert">
-                            <strong>规则:</strong>
-                            <p>
-                                1.介绍只能存在一个。<br/>
-                                2.介绍会出现展示全部按钮，默认高度为125px。<br/>
-                                3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
-                                4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
-                                5.删除所有版块则不会生成整个详情模块<br/>
-                            </p>
-                        </div>
-                        {details.map((detail, index) => this.renderDetail(detail, index))}
-                        <button
-                            className="btn btn-primary center-block"
-                            onClick={this
-                            .addDetail
-                            .bind(this)}>添加版块</button>
+                </div>
+                <div
+                    className={`panel-body collapse ${ui.detailStatus
+                    ? 'in'
+                    : ''}`}>
+                    <div className="alert alert-warning" role="alert">
+                        <strong>规则:</strong>
+                        <p>
+                            1.介绍只能存在一个。<br/>
+                            2.介绍会出现展示全部按钮，默认高度为125px。<br/>
+                            3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
+                            4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
+                            5.删除所有版块则不会生成整个详情模块<br/>
+                        </p>
                     </div>
+                    {details.map((detail, index) => this.renderDetail(detail, index))}
+                    <button
+                        className="btn btn-primary center-block"
+                        onClick={this
+                        .addDetail
+                        .bind(this)}>添加版块</button>
                 </div>
             </div>
         )

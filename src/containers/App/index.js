@@ -14,7 +14,7 @@ export default class App extends Component {
       this.ds = stores.dataStore.serialize;
       window
         .jQuery('#template-html')
-        .val(window.jQuery('#template-result').html() + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
+        .val(window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g,'') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
             "('collapse'))</script>");
     });
   }
@@ -35,7 +35,16 @@ export default class App extends Component {
           <div className="row" style={{
             margin: '20px 0'
           }}>
-            <button id="template-submit" className="btn btn-lg btn-primary center-block" onClick={window.templateSubmit}>提交</button>
+            <div style={{textAlign:'center'}}>
+              <button
+                id="template-submit"
+                className="btn btn-lg btn-primary"
+                onClick={window.templateSubmit}> 提交 </button><span>  </span>
+              <button
+                id="template-submit"
+                className="btn btn-lg btn-warning"
+                onClick={window.recommend}> 推荐 </button>
+            </div>
           </div>
           <input
             type="hidden"
@@ -52,7 +61,6 @@ export default class App extends Component {
             }}
               rows="30"></textarea>
           </div>
-          <textarea name="" id="test" cols="30" rows="10"></textarea>
           <DevTools/>
         </div>
       </Provider>
