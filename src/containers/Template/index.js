@@ -90,7 +90,7 @@ export default class Template extends Component {
                 return (
                     <div className="main-body-description" key={index}>
                         <div className="section-title">
-                            <h3>Description</h3>
+                            <h3>{}detail.title</h3>
                         </div>
                         <div className="body-description-paragraph collapse" id="description">
                             <p
