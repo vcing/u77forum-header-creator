@@ -36,6 +36,12 @@ export default class Editor extends Component {
             .uiStore
             .toggleDetailStatus();
     }
+    toggleRecommend() {
+        this
+            .props
+            .uiStore
+            .toggleRecommendStatus();
+    }
     toggleDetailItem(index) {
         return function () {
             console.log(index);
@@ -86,10 +92,40 @@ export default class Editor extends Component {
             detail.removeInfoItem(index);
         }
     }
+    activeTag(index) {
+        return function () {
+            this
+                .props
+                .uiStore
+                .activeTag(index);
+        }
+    }
+    toggleTag(detail, id, name) {
+        return function () {
+            detail.toggleTag(id, name);
+        }
+    }
     renderDetail(detail, index) {
         let infoRender = (
             <div></div>
         );
+        let tagRender = (
+            <div></div>
+        );
+        let defaultRender = (
+            <div className="form-group">
+                <label htmlFor={`details.${index}.content`}>版块内容</label>
+                <textarea
+                    className="form-control"
+                    id={`details.${index}.content`}
+                    placeholder="内容"
+                    name={`details.${index}.content`}
+                    onChange={this
+                    .changeData
+                    .bind(this)}
+                    value={detail.content}></textarea>
+            </div>
+        )
         let ui = this.props.uiStore;
         if (detail.type === 'info') {
             infoRender = (
@@ -98,12 +134,13 @@ export default class Editor extends Component {
                         .infos
                         .map((item, _index) => (
                             <div className="panel panel-default" key={_index}>
-                                <div className="panel-heading">
+                                <div
+                                    className="panel-heading"
+                                    onClick={this
+                                    .toggleInfoItem(_index)
+                                    .bind(this)}>
                                     <h5>{_index + 1}
                                         <i
-                                            onClick={this
-                                            .toggleInfoItem(_index)
-                                            .bind(this)}
                                             className={`fa fa-angle-right fa-fw pull-left ${ui.infoStatus[_index]
                                             ? ''
                                             : 'fa-rotate-90'}`}></i>
@@ -163,6 +200,53 @@ export default class Editor extends Component {
                 </div>
             )
         }
+        if (detail.type === 'tag') {
+            let arr = [1, 2, 3, 4, 5];
+            tagRender = (
+                <div className="tag">
+                    <ul className="nav nav-tabs">
+                        {arr.map(i => {
+                            if (ui.tags.hasOwnProperty(i)) {
+                                return (
+                                    <li
+                                        className={ui.currentTag === i
+                                        ? 'active'
+                                        : ''}
+                                        key={i}>
+                                        <a
+                                            style={{
+                                            cursor: 'pointer'
+                                        }}
+                                            onClick={this
+                                            .activeTag(i)
+                                            .bind(this)}>{ui.tags[i].name}</a>
+                                    </li>
+                                )
+                            }
+                            return '';
+                        })}
+                    </ul>
+                    <div className="content">
+                        {ui
+                            .tags
+                            .hasOwnProperty(ui.currentTag) && ui
+                            .tags[ui.currentTag]
+                            .list
+                            .map((tag, _index) => (
+                                <a
+                                    className={"btn btn-" + (detail.findTag(tag.id) >= 0
+                                    ? 'danger'
+                                    : 'default')}
+                                    onClick={this.toggleTag(detail, tag.id, tag.name)}
+                                    style={{
+                                    margin: '10px 10px 0px 0'
+                                }}
+                                    key={_index}>{tag.name}</a>
+                            ))}
+                    </div>
+                </div>
+            )
+        }
         return (
             <div
                 className="panel panel-default"
@@ -173,6 +257,9 @@ export default class Editor extends Component {
             }}>
                 <div
                     className="panel-heading"
+                    onClick={this
+                    .toggleDetailItem(index)
+                    .bind(this)}
                     style={{
                     background: '#fff',
                     padding: 0,
@@ -181,9 +268,6 @@ export default class Editor extends Component {
                 }}>
                     <h4>{index + 1}.{detail.type}
                         <i
-                            onClick={this
-                            .toggleDetailItem(index)
-                            .bind(this)}
                             style={{
                             transition: "all .3s ease"
                         }}
@@ -214,6 +298,7 @@ export default class Editor extends Component {
                             <option value="developer">开发者</option>
                             <option value="reason">推荐理由</option>
                             <option value="number">复制群号</option>
+                            <option value="tag">标签</option>
                             <option value="images">图片列表</option>
                             <option value="description">介绍</option>
                             <option value="log">更新日志</option>
@@ -233,22 +318,16 @@ export default class Editor extends Component {
                             .changeData
                             .bind(this)}/>
                     </div>
-                    {detail.type === 'info'
-                        ? infoRender
-                        : (
-                            <div className="form-group">
-                                <label htmlFor={`details.${index}.content`}>版块内容</label>
-                                <textarea
-                                    className="form-control"
-                                    id={`details.${index}.content`}
-                                    placeholder="内容"
-                                    name={`details.${index}.content`}
-                                    onChange={this
-                                    .changeData
-                                    .bind(this)}
-                                    value={detail.content}></textarea>
-                            </div>
-                        )}
+                    {(() => {
+                        switch (detail.type) {
+                            case 'info':
+                                return infoRender;
+                            case 'tag':
+                                return tagRender;
+                            default:
+                                return defaultRender;
+                        }
+                    })()}
 
                 </div>
             </div>
@@ -257,22 +336,25 @@ export default class Editor extends Component {
     render() {
         let header = this.props.dataStore.header;
         let details = this.props.dataStore.details;
+        let other = this.props.dataStore.other;
         let ui = this.props.uiStore;
+        let data = this.props.dataStore;
         return (
-
             <div
                 id="header.form"
                 className="form-horizontal"
                 style={{
                 marginTop: 30
             }}>
+
                 <div className="panel panel-success">
-                    <div className="panel-heading">
-                        <h3>头部设置
+                    <div
+                        className="panel-heading"
+                        onClick={this
+                        .toggleHeader
+                        .bind(this)}>
+                        <h3 >头部设置
                             <i
-                                onClick={this
-                                .toggleHeader
-                                .bind(this)}
                                 style={{
                                 transition: "all .3s ease"
                             }}
@@ -402,7 +484,7 @@ export default class Editor extends Component {
                                     .changeData
                                     .bind(this)}
                                     placeholder="论坛版块ID"
-                                    value={header.categoryId}/>
+                                    value={header.categoryId} disabled/>
                             </div>
                         </div>
                         <div className="form-group">
@@ -545,12 +627,13 @@ export default class Editor extends Component {
                     </div>
                 </div>
                 <div className="panel panel-info">
-                    <div className="panel-heading">
-                        <h3>详情设置
+                    <div
+                        className="panel-heading"
+                        onClick={this
+                        .toggleDetail
+                        .bind(this)}>
+                        <h3 >详情设置
                             <i
-                                onClick={this
-                                .toggleDetail
-                                .bind(this)}
                                 style={{
                                 transition: "all .3s ease"
                             }}
@@ -572,6 +655,74 @@ export default class Editor extends Component {
                             .bind(this)}>添加版块</button>
                     </div>
                 </div>
+                <div className="panel panel-default">
+                    <div
+                        className="panel-heading"
+                        onClick={this
+                        .toggleRecommend
+                        .bind(this)}>
+                        <h3>其他设置
+                            <i
+                                style={{
+                                transition: "all .3s ease"
+                            }}
+                                className={`fa fa-angle-right pull-left fa-fw ${ui.recommendStatus
+                                ? 'fa-rotate-90'
+                                : ''}`}></i>
+                        </h3>
+                    </div>
+                    <div
+                        className={`panel-body collapse ${ui.recommendStatus
+                        ? 'in'
+                        : ''}`}>
+                        <div className="form-group">
+                            <label htmlFor="other.topicId" className="col-sm-3 control-label">关联主题ID</label>
+                            <div className="col-sm-9">
+                                <input
+                                    id="other.topicId"
+                                    name="other.topicId"
+                                    type="text"
+                                    className="form-control"
+                                    onChange={this
+                                    .changeData
+                                    .bind(this)}
+                                    placeholder="关联主题"
+                                    value={other.topicId}/>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="other.cover" className="col-sm-3 control-label">首页封面</label>
+                            <div className="col-sm-9">
+                                <input
+                                    id="other.cover"
+                                    name="other.cover"
+                                    type="text"
+                                    className="form-control"
+                                    onChange={this
+                                    .changeData
+                                    .bind(this)}
+                                    placeholder="首页封面"
+                                    value={other.cover}/>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="other.description" className="col-sm-3 control-label">首页简介</label>
+                            <div className="col-sm-9">
+                                <textarea
+                                    id="other.description"
+                                    name="other.description"
+                                    type="text"
+                                    className="form-control"
+                                    onChange={this
+                                    .changeData
+                                    .bind(this)}
+                                    placeholder="首页简介"
+                                    value={other.description}></textarea>
+                            </div>
+                        </div>
+                        <input type="hidden" id="tags" value={data.serializeTags}/>
+                    </div>
+                </div>
                 <div className="alert alert-warning" role="alert">
                     <strong>规则:</strong>
                     <p>
@@ -580,7 +731,9 @@ export default class Editor extends Component {
                         3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
                         4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
                         5.删除所有版块则不会生成整个详情模块<br/>
-                        6.如果需要提交,<strong>请务必改变一下内容</strong>再点提交按钮
+                        6.如果需要提交,<strong>请务必改变一下内容</strong>再点提交按钮<br/>
+                        7.标签最多只能添加5个.<br/>
+                        8.首页简介中请勿回车换行,换了也没用.
                     </p>
                 </div>
             </div>

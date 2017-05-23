@@ -4,15 +4,37 @@ import {observable, action} from 'mobx';
 class UiStore {
     @observable headerStatus = false;
     @observable detailStatus = false;
-    @observable detailItemStatus = new Array(99);
-    @observable infoStatus = new Array(99);
+    @observable recommendStatus = false;
+    @observable detailItemStatus = Array(99).fill(true);
+    @observable infoStatus = Array(99).fill(true);
+    @observable tags = [];
+    @observable currentTag = 0;
 
     constructor() {
         this.history = createHistory();
+        this.initTags();
+        window.ui = this;
+    }
+
+    @action initTags() {
+        window
+            .jQuery
+            .get('http://www.u77.com/tag/cache', result => {
+                this.tags = result.data
+                this.currentTag = 1;
+            });
+    }
+
+    @action activeTag(index) {
+        this.currentTag = index;
     }
 
     @action toggleHeaderStatus() {
         this.headerStatus = !this.headerStatus;
+    }
+
+    @action toggleRecommendStatus() {
+        this.recommendStatus = !this.recommendStatus
     }
 
     @action toggleDetailStatus() {
@@ -26,6 +48,7 @@ class UiStore {
     @action toggleInfoStatus(index) {
         this.infoStatus[index] = !this.infoStatus[index];
     }
+
 }
 
 let uiStore = new UiStore();

@@ -33,19 +33,6 @@ class Detail {
     @observable content = '版块内容';
     @observable _type = 'reason';
 
-    // @computed get content() {
-    //     return this._content
-    // }
-
-    // set content(value) {
-    //     if(this.type !== 'info') {
-    //         // this._content = value.replace('\\',"\\\\");
-    //         this._content = value;
-    //     }else {
-    //         this._content = value;
-    //     }
-    // }
-
     @computed get type() {
         return this._type;
     }
@@ -58,7 +45,10 @@ class Detail {
                         'e/201705/150923ch1wksuwkjsjcc06.png';
                 break;
             case 'info':
-                this.content = '[{"name":"属性名称","value":"属性值","link":"/user/1"}]';
+                this.content = [{"name":"属性名称","value":"属性值","link":"/user/1"}];
+                break;
+            case 'tag':
+                this.content = [{"name":"中文","id":1}];
                 break;
             default:
                 break;
@@ -67,31 +57,56 @@ class Detail {
 
     @computed get infos() {
         if (this.type === 'info') {
-            let result = [];
-            try {
-                result = JSON.parse(this.content);
-            } catch (e) {}
-            return result;
+            return this.content;
         } else {
             return [];
         }
     }
 
     set infos({index, attr, value}) {
-        let _infos = JSON.parse(this.content);
-        _infos[index][attr] = value;
-        this.content = JSON
-            .stringify(_infos);
+        this.content[index][attr] = value;
     }
 
     @action addInfoItem() {
-        this.infos.push({"name":"新属性","value":"新属性的值","link":"/user/1"})
-        this.content = JSON.stringify(this.infos);
+        this
+            .infos
+            .push({"name": "新属性", "value": "新属性的值", "link": "/user/1"})
     }
 
     @action removeInfoItem(index) {
-        this.infos.splice(index,1);
-        this.content = JSON.stringify(this.infos);
+        this
+            .infos
+            .splice(index, 1);
+    }
+
+    @computed get tags() {
+        if (this.type === 'tag') {
+            return this.content;
+        } else {
+            return [];
+        }
+    }
+
+    set tags({index, attr, value}) {
+        this.content[index][attr] = value;
+    }
+
+    @action toggleTag(id, name) {
+        let index = this.findTag(id);
+        if(index >= 0) {
+            this.tags.splice(index,1);
+        }else {
+            if(this.tags.length >= 5){
+                return false;
+            }
+            this
+            .tags
+            .push({id, name});
+        }
+    }
+
+    findTag(id) {
+        return this.tags.findIndex(tag => tag.id === id);
     }
 
     constructor({
@@ -105,19 +120,11 @@ class Detail {
     }) {
         this.title = title;
         this.type = type;
-        if (type === 'info') {
-            this.content = JSON.stringify(content);
-        } else {
-            this.content = content;
-        }
+        this.content = content;
     }
 
     @computed get serialize() {
-        return {
-            title:this.title,
-            content:this.type === 'info' ? JSON.parse(this.content) : this.content,
-            type:this.type
-        }
+        return {title: this.title, content: this.content, type: this.type}
     }
 }
 
@@ -140,6 +147,12 @@ class DataStore {
             link: ''
         },
         categoryId: 1
+    }
+    @observable details = [];
+    @observable other = {
+        topicId:0,
+        cover:'',
+        description:''
     }
 
     @action addHeaderButton() {
@@ -168,11 +181,12 @@ class DataStore {
             .splice(index, 1);
     }
 
-    @observable details = [];
-
     constructor() {
         window.ds = this;
-        window.templateLoad = this.load.bind(this);
+        window.templateLoad = this
+            .load
+            .bind(this);
+        this.header.categoryId = window.categoryId;
         this
             .details
             .push(new Detail({
@@ -187,6 +201,18 @@ class DataStore {
         this
             .details
             .push(new Detail({type: 'number', content: '去月球手游版玩家群:  513253986', title: '513253986'}));
+        this
+            .details
+            .push(new Detail({
+                title: '标签',
+                type: 'tag',
+                content: [
+                    {
+                        id: 1,
+                        name: '中文'
+                    }
+                ]
+            }))
         this
             .details
             .push(new Detail({
@@ -257,9 +283,21 @@ class DataStore {
     }
 
     @computed get serialize() {
-        let temp = Object.assign({},this);
-        temp.details = temp.details.map(detail => detail.serialize);
+        let temp = Object.assign({}, this);
+        temp.details = temp
+            .details
+            .map(detail => detail.serialize);
         return JSON.stringify(temp); //.replace(/\\/g,'\\\\');
+    }
+
+    @computed get serializeTags() {
+        let detail = this.details.find(detail => detail.type === 'tag');
+        if(detail) {
+            return detail.tags.map(tag => tag.id).toString();
+        }else {
+            return '';
+        }
+        
     }
 
     @action changeData(attr, value) {

@@ -83,10 +83,14 @@ export default class Template extends Component {
                             <a
                                 id="detail-showall"
                                 type="button"
-                                onClick={function(){
-                                    window.jQuery('#description').removeClass('collapse');
-                                }}
-                                className="btn btn-link"><span>展开全部</span><span className="fa fa-angle-down"></span>
+                                onClick={function () {
+                                window
+                                    .jQuery('#description')
+                                    .removeClass('collapse');
+                            }}
+                                className="btn btn-link">
+                                <span>展开全部</span>
+                                <span className="fa fa-angle-down"></span>
                             </a>
                         </div>
                     </div>
@@ -132,6 +136,26 @@ export default class Template extends Component {
                         </ul>
                     </div>
                 )
+            case 'tag':
+                return (
+                    <div className="main-body-reason" key={index}>
+                        <div className="section-title">
+                            <h3>{detail.title}</h3>
+                        </div>
+                        <ul
+                            className="list-unstyled list-inline side-body-tag"
+                            id="appTag"
+                            style={{
+                            padding: "0 30px"
+                        }}>
+                        {detail.tags.map((tag,_index) => (
+                            <li key={_index}>
+                                <a href={"/tag/"+tag.id} data-id={tag.id}> {tag.name} </a>
+                            </li>
+                        ))}
+                        </ul>
+                    </div>
+                )
             default:
                 break;
         }
@@ -140,6 +164,7 @@ export default class Template extends Component {
     render() {
         let header = this.props.dataStore.header;
         let details = this.props.dataStore.details;
+        let other = this.props.dataStore.other;
         return (
             <section className="app-show-main" id="u77-detail">
                 <div className="show-main-header">
@@ -200,11 +225,11 @@ export default class Template extends Component {
                     <div className="main-header-tab">
                         <ul className="nav nav-pills nav-justified">
                             <li role="presentation" className="active">
-                                <a href="#content" aria-controls="detail" role="tab" data-taptap-tab="detail">详情</a>
+                                <a href={`/topic/${other.topicId}#content`} aria-controls="detail" role="tab" data-taptap-tab="detail">详情</a>
                             </li>
                             <li role="presentation" className="">
                                 <a
-                                    href="#u77-comments"
+                                    href={`/topic/${other.topicId}#u77-comments`}
                                     aria-controls="detail"
                                     role="tab"
                                     data-taptap-tab="review">评价
