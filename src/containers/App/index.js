@@ -10,13 +10,21 @@ import Editor from '../Editor';
 export default class App extends Component {
   constructor() {
     super();
-    autorun(() => {
-      this.ds = stores.dataStore.serialize;
+
+    function synchronizeHtml() {
       window
         .jQuery('#template-html')
-        .val(window.jQuery('#template-result').html() && window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g,'') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
+        .val(window.jQuery('#template-result').html() && window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g, '') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
             "('collapse'))</script>");
+    }
+
+    autorun(() => {
+      this.ds = stores.dataStore.serialize;
+      synchronizeHtml();
     });
+
+    synchronizeHtml();
+
   }
   render() {
     return (
@@ -35,15 +43,22 @@ export default class App extends Component {
           <div className="row" style={{
             margin: '20px 0'
           }}>
-            <div style={{textAlign:'center'}}>
+            <div style={{
+              textAlign: 'center'
+            }}>
               <button
                 id="template-submit"
                 className="btn btn-lg btn-primary"
-                onClick={window.templateSubmit}> 提交 </button><span>  </span>
+                onClick={window.templateSubmit}>
+                提交
+              </button>
+              <span></span>
               <button
                 id="template-recommend"
                 className="btn btn-lg btn-warning"
-                onClick={window.recommend}> 推荐 </button>
+                onClick={window.recommend}>
+                推荐
+              </button>
             </div>
           </div>
           <input

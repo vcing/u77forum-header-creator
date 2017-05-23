@@ -49,7 +49,7 @@ export default class Template extends Component {
                 )
             case 'images':
                 return (
-                    <div className="main-body-images" key={index}>
+                    <div className="main-body-images preventSlideOut" key={index}>
                         <div className="body-images-normal">
                             <ul className="list-unstyled" data-taptap-app="screenshots" id="imageShots">
                                 {detail
