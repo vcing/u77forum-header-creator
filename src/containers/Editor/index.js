@@ -676,10 +676,10 @@ export default class Editor extends Component {
                         ? 'in'
                         : ''}`}>
                         <div className="form-group">
-                            <label htmlFor="other.topicId" className="col-sm-3 control-label">关联主题ID</label>
+                            <label htmlFor="topicId" className="col-sm-3 control-label">关联主题ID</label>
                             <div className="col-sm-9">
                                 <input
-                                    id="other.topicId"
+                                    id="topicId"
                                     name="other.topicId"
                                     type="text"
                                     className="form-control"
