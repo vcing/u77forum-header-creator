@@ -710,7 +710,7 @@ export default class Editor extends Component {
                             <div className="col-sm-9">
                                 <textarea
                                     id="description"
-                                    name="description"
+                                    name="other.description"
                                     type="text"
                                     className="form-control"
                                     onChange={this

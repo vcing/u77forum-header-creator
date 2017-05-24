@@ -277,6 +277,7 @@ class DataStore {
                 .details
                 .map(detail => new Detail(detail));
             this.details = data.details;
+            this.other = data.other;
         } catch (e) {
             console.log(e);
         }
