@@ -691,10 +691,10 @@ export default class Editor extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="other.cover" className="col-sm-3 control-label">首页封面</label>
+                            <label htmlFor="cover" className="col-sm-3 control-label">首页封面</label>
                             <div className="col-sm-9">
                                 <input
-                                    id="other.cover"
+                                    id="cover"
                                     name="other.cover"
                                     type="text"
                                     className="form-control"
@@ -709,8 +709,8 @@ export default class Editor extends Component {
                             <label htmlFor="other.description" className="col-sm-3 control-label">首页简介</label>
                             <div className="col-sm-9">
                                 <textarea
-                                    id="other.description"
-                                    name="other.description"
+                                    id="description"
+                                    name="description"
                                     type="text"
                                     className="form-control"
                                     onChange={this
