@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {autorun} from 'mobx';
 import {observer, Provider} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import stores from '../../stores';
@@ -8,23 +7,19 @@ import Editor from '../Editor';
 
 @observer
 export default class App extends Component {
-  constructor() {
-    super();
+  componentDidMount() {
+    this.synchronizeHtml();
+  }
 
-    function synchronizeHtml() {
-      window
-        .jQuery('#template-html')
-        .val(window.jQuery('#template-result').html() && window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g, '') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
-            "('collapse'))</script>");
-    }
+  componentDidUpdate() {
+    this.synchronizeHtml();
+  }
 
-    autorun(() => {
-      this.ds = stores.dataStore.serialize;
-      synchronizeHtml();
-    });
-
-    synchronizeHtml();
-
+  synchronizeHtml() {
+    window
+      .jQuery('#template-html')
+      .val(window.jQuery('#template-result').html() && window.jQuery('#template-result').html().replace(/<!--[\w\W]*?-->/g, '') + "<script>$('#detail-showall').click(()=>window.jQuery('#description').removeClass" +
+          "('collapse'))</script>");
   }
   render() {
     return (

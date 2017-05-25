@@ -181,6 +181,10 @@ class DataStore {
             .splice(index, 1);
     }
 
+    @action loadCategoryId(id) {
+        this.header.categoryId = id;
+    }
+
     constructor() {
         window.ds = this;
         window.templateLoad = this
