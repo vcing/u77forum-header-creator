@@ -186,7 +186,7 @@ class DataStore {
         window.templateLoad = this
             .load
             .bind(this);
-        this.header.categoryId = window.categoryId;
+        this.header.categoryId = window.categoryId || 0;
         this
             .details
             .push(new Detail({

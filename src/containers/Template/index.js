@@ -41,7 +41,7 @@ export default class Template extends Component {
                             title="复制"
                             data-toggle="tooltip"
                             data-placement="top"
-                            data-taptap-copy="qq-group"
+                            data-u77game-copy="qq-group"
                             data-clipboard-text={detail.title}
                             data-success="Copied the link"
                             data-fail="Failed to copy the link"></span>
@@ -51,7 +51,7 @@ export default class Template extends Component {
                 return (
                     <div className="main-body-images preventSlideOut" key={index}>
                         <div className="body-images-normal">
-                            <ul className="list-unstyled" data-taptap-app="screenshots" id="imageShots">
+                            <ul className="list-unstyled" data-u77game-app="screenshots" id="imageShots">
                                 {detail
                                     .content
                                     .split(',')
@@ -182,7 +182,7 @@ export default class Template extends Component {
                     </div>
                     <div className="main-header-text">
                         <h1>{header.name}</h1>
-                        <small className="taptap-app-area">{header.corner}</small>
+                        <small className="u77game-app-area">{header.corner}</small>
                         <div className="header-text-author">
                             <a href={header.authorLink} target="_blank">
                                 <span >{header.author}</span>
@@ -197,7 +197,7 @@ export default class Template extends Component {
                                 .buttons
                                 .map((btn, index) => (
                                     <div
-                                        className="taptap-button-download"
+                                        className="u77game-button-download"
                                         data-type={btn.type}
                                         key={Math.random()}>
                                         <a
@@ -210,12 +210,12 @@ export default class Template extends Component {
                                 ))}
                             {header.googlePlay.available
                                 ? (
-                                    <div className="taptap-button-download">
+                                    <div className="u77game-button-download">
                                         <a
                                             href={header.googlePlay.link}
                                             target="_blank"
                                             className="btn btn-link android google-play"
-                                            data-taptap-download="button"
+                                            data-u77game-download="button"
                                             rel="nofollow">{header.googlePlay.price}</a>
                                     </div>
                                 )
@@ -225,14 +225,14 @@ export default class Template extends Component {
                     <div className="main-header-tab">
                         <ul className="nav nav-pills nav-justified">
                             <li role="presentation" className="active">
-                                <a href={`/topic/${other.topicId}#content`} aria-controls="detail" role="tab" data-taptap-tab="detail">详情</a>
+                                <a href={`/topic/${other.topicId}#content`} aria-controls="detail" role="tab" data-u77game-tab="detail">详情</a>
                             </li>
                             <li role="presentation" className="">
                                 <a
                                     href={`/topic/${other.topicId}#u77-comments`}
                                     aria-controls="detail"
                                     role="tab"
-                                    data-taptap-tab="review">评价
+                                    data-u77game-tab="review">评价
                                 </a>
                             </li>
                             <li role="presentation" className="">
@@ -244,7 +244,7 @@ export default class Template extends Component {
                 </div>
                 <div
                     className="show-main-body collapse in first"
-                    data-taptap-tab-target="detail">
+                    data-u77game-tab-target="detail">
                     {details.map((detail, index) => this.renderDetail(detail, index))}
                 </div>
                 <div id="u77-comments"></div>
