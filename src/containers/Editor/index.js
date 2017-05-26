@@ -383,6 +383,21 @@ export default class Editor extends Component {
                             </div>
                         </div>
                         <div className="form-group">
+                            <label htmlFor="header.otherName" className="col-sm-3 control-label">英文名称</label>
+                            <div className="col-sm-9">
+                                <input
+                                    id="header.otherName"
+                                    name="header.otherName"
+                                    type="text"
+                                    className="form-control"
+                                    onChange={this
+                                    .changeData
+                                    .bind(this)}
+                                    placeholder="英文名称"
+                                    value={header.otherName}/>
+                            </div>
+                        </div>
+                        <div className="form-group">
                             <label htmlFor="header.img" className="col-sm-3 control-label">封面图片URL</label>
                             <div className="col-sm-9">
                                 <input
@@ -731,9 +746,9 @@ export default class Editor extends Component {
                         3.图片版块版块内容填写图片URL地址，以逗号分割。<br/>
                         4.复制群号模块的模块标题为点击右侧按钮复制的文本。<br/>
                         5.删除所有版块则不会生成整个详情模块<br/>
-                        6.如果需要提交,<strong>请务必改变一下内容</strong>再点提交按钮<br/>
+                        6.角标和英文名称不能同时存在!<br/>
                         7.标签最多只能添加5个.<br/>
-                        8.首页简介中请勿回车换行,换了也没用.
+                        8.首页简介中请勿回车换行,换了也没用.<br/>
                     </p>
                 </div>
             </div>

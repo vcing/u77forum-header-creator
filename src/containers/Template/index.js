@@ -182,7 +182,8 @@ export default class Template extends Component {
                     </div>
                     <div className="main-header-text">
                         <h1>{header.name}</h1>
-                        <small className="u77game-app-area">{header.corner}</small>
+                        {header.otherName ? <h2>{header.otherName}</h2> : ''}
+                        {header.corner ? (<small className="u77game-app-area">{header.corner}</small>) : ''}
                         <div className="header-text-author">
                             <a href={header.authorLink} target="_blank">
                                 <span >{header.author}</span>
@@ -225,11 +226,11 @@ export default class Template extends Component {
                     <div className="main-header-tab">
                         <ul className="nav nav-pills nav-justified">
                             <li role="presentation" className="active">
-                                <a href={`/topic/${other.topicId}#content`} aria-controls="detail" role="tab" data-u77game-tab="detail">详情</a>
+                                <a href={`/topic/${other.topicId}`} aria-controls="detail" role="tab" data-u77game-tab="detail">详情</a>
                             </li>
                             <li role="presentation" className="">
                                 <a
-                                    href={`/topic/${other.topicId}#u77-comments`}
+                                    href={`/topic/${other.topicId}`}
                                     aria-controls="detail"
                                     role="tab"
                                     data-u77game-tab="review">评价
