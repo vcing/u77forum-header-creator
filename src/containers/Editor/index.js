@@ -44,7 +44,6 @@ export default class Editor extends Component {
     }
     toggleDetailItem(index) {
         return function () {
-            console.log(index);
             this
                 .props
                 .uiStore
@@ -105,6 +104,9 @@ export default class Editor extends Component {
             detail.toggleTag(id, name);
         }
     }
+    openUpload(name){
+        window.showUpload(name);
+    }
     renderDetail(detail, index) {
         let infoRender = (
             <div></div>
@@ -112,6 +114,9 @@ export default class Editor extends Component {
         let tagRender = (
             <div></div>
         );
+        let imageRender = (
+            <div></div>
+        )
         let defaultRender = (
             <div className="form-group">
                 <label htmlFor={`details.${index}.content`}>版块内容</label>
@@ -247,6 +252,24 @@ export default class Editor extends Component {
                 </div>
             )
         }
+        if (detail.type === 'images') {
+            imageRender = (<div className="form-group">
+                <div className="col-sm-12">
+                <label htmlFor={`details.${index}.content`}>版块内容</label>
+                </div>
+                <div className="col-sm-9"><textarea
+                    className="form-control"
+                    id={`details.${index}.content`}
+                    placeholder="内容"
+                    name={`details.${index}.content`}
+                    onChange={this
+                    .changeData
+                    .bind(this)}
+                    value={detail.content}></textarea>
+                    </div>
+                    <div className="col-sm-3"><button className="btn btn-primary btn-full" onClick={this.openUpload.bind(this,`details.${index}.content`)}> 上传图片</button></div>
+            </div>)
+        }
         return (
             <div
                 className="panel panel-default"
@@ -324,6 +347,8 @@ export default class Editor extends Component {
                                 return infoRender;
                             case 'tag':
                                 return tagRender;
+                            case 'images':
+                                return imageRender;
                             default:
                                 return defaultRender;
                         }
@@ -399,7 +424,7 @@ export default class Editor extends Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="header.img" className="col-sm-3 control-label">封面图片URL</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6">
                                 <input
                                     id="header.img"
                                     name="header.img"
@@ -410,7 +435,8 @@ export default class Editor extends Component {
                                     .bind(this)}
                                     placeholder="封面图片URL"
                                     value={header.img}/>
-                            </div>
+                            </div> 
+                            <div className="col-sm-3"><button className="btn btn-primary btn-full" onClick={this.openUpload.bind(this,"header.img")}> 上传图片</button></div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="header.corner" className="col-sm-3 control-label">角标</label>
@@ -473,7 +499,7 @@ export default class Editor extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="header.imgTip" className="col-sm-3 control-label">图片下方Tip</label>
+                            <label htmlFor="header.imgTip" className="col-sm-3 control-label">游戏语言</label>
                             <div className="col-sm-9">
                                 <input
                                     id="header.imgTip"
@@ -483,7 +509,7 @@ export default class Editor extends Component {
                                     onChange={this
                                     .changeData
                                     .bind(this)}
-                                    placeholder="图片下方Tip"
+                                    placeholder="游戏语言"
                                     value={header.imgTip}/>
                             </div>
                         </div>
@@ -707,7 +733,7 @@ export default class Editor extends Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="cover" className="col-sm-3 control-label">首页封面</label>
-                            <div className="col-sm-9">
+                            <div className="col-sm-6">
                                 <input
                                     id="cover"
                                     name="other.cover"
@@ -719,6 +745,7 @@ export default class Editor extends Component {
                                     placeholder="首页封面"
                                     value={other.cover}/>
                             </div>
+                            <div className="col-sm-3"><button className="btn btn-primary btn-full" onClick={this.openUpload.bind(this,"other.cover")}> 上传图片</button></div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="other.description" className="col-sm-3 control-label">首页简介</label>

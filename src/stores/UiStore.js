@@ -21,6 +21,8 @@ class UiStore {
             .jQuery
             .get('http://www.u77.com/tag/cache', result => {
                 this.tags = result.data
+                this.tags["1"].list.push({id:12 ,name:"安卓"})
+                this.tags["1"].list.push({id:13 ,name:"IOS"})
                 this.currentTag = 1;
             });
     }
